@@ -1,0 +1,10 @@
+yfinance
+pandas-ta
+pymongo
+groq
+google-genai
+python-dotenv
+pandas
+requests
+flask
+flask-cors

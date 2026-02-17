@@ -1,0 +1,46 @@
+name: AI Hedge Fund Bot
+
+on:
+  schedule:
+    # Gemini Strategist: Daily at 9:00 AM IST (3:30 AM UTC)
+    - cron: '30 3 * * 1-5'
+    
+    # Llama Trader: Every 15 mins from 9:15 AM to 3:30 PM IST (3:45 UTC to 10:00 UTC)
+    # Note: GitHub Actions schedule isn't perfectly precise, but good enough for simulation.
+    - cron: '*/15 3-10 * * 1-5'
+    
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  run-bots:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+
+    - name: Run Gemini Brain (Strategist)
+      if: github.event.schedule == '30 3 * * 1-5' || github.event_name == 'workflow_dispatch'
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      run: |
+        python backend/gemini_brain.py
+
+    - name: Run Llama Trader (Execution)
+      if: github.event.schedule != '30 3 * * 1-5' || github.event_name == 'workflow_dispatch'
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      run: |
+        python backend/llama_trader.py
