@@ -4,6 +4,7 @@ pymongo
 python-dotenv
 yfinance
 pandas
-pandas-ta
+pandas
+pandas-ta==0.3.14b0
 groq
 gunicorn
