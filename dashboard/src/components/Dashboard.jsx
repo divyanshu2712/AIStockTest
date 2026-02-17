@@ -3,7 +3,9 @@ import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { TrendingUp, Activity, DollarSign, AlertTriangle, Play, Pause, Settings } from 'lucide-react';
 
-const API_BASE = 'http://localhost:5000/api';
+// Use current hostname in dev, or the production URL in prod.
+// Ideally, use VITE_API_URL environment variable.
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 export default function Dashboard() {
     const [stats, setStats] = useState(null);

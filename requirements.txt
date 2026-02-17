@@ -1,0 +1,9 @@
+flask
+flask-cors
+pymongo
+python-dotenv
+yfinance
+pandas
+pandas-ta
+groq
+gunicorn

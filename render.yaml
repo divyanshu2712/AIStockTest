@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: ai-stock-backend
+    env: python
+    region: singapore # Optional, can use ohio etc
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn backend.api:app
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
