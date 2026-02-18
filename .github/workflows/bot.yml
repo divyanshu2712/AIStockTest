@@ -22,7 +22,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.12'
 
     - name: Install Dependencies
       run: |
@@ -33,9 +33,9 @@ jobs:
       if: github.event.schedule == '30 3 * * 1-5' || github.event_name == 'workflow_dispatch'
       env:
         MONGO_URI: ${{ secrets.MONGO_URI }}
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       run: |
-        python backend/gemini_brain.py
+        python backend/llama_strategist.py
 
     - name: Run Llama Trader (Execution)
       if: github.event.schedule != '30 3 * * 1-5' || github.event_name == 'workflow_dispatch'
