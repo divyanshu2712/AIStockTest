@@ -1,0 +1,24 @@
+name: Gemini Strategist (Daily)
+
+on:
+  schedule:
+    - cron: '30 3 * * 1-5' # 9:00 AM IST
+  workflow_dispatch:
+
+jobs:
+  brain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+      - name: Run Strategist
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python backend/llama_strategist.py
